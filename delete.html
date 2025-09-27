@@ -1,0 +1,184 @@
+there are some things which work in chrome console option but do not work in the vs code for ex alert ,console.log(window)
+the reason v8 engine of chrome is not directly enbedded .All the window related things are removed
+ we know node.js will only be used to run at server site . therefore all the UI related things are removed 
+ all window object are removed it only has core functionallity of js 
+many features were added and removed 
+all file handling is added in js before becoming nodejs
+ 
+Whenever we create a new project start it we need to write a code 
+npm init -->this  command npm initialse it  creates a template which helps us run our project 
+
+#if you are running a file and then you need to write npm init , npm --v,npm --version and if a error comes 
+of npm idk then 
+run a line of code "Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass"
+after this you can run npm init , npm --v,npm --version all
+
+//after i have run a code npm init then 
+it will ask you many things one by one 
+package name: (hello)
+version: (1.0.0)
+description:
+entry point: (hello.js)
+test command:
+git repository:
+keywords:
+author:
+license: (ISC)
+after you have answered all then a package.json file will me automatically created in the same folder
+
+package.json is a type of configration file this is a type of configration for this projec t
+all the dependencies which will be installed,whenever we will run it ,publish it we will use this
+
+now see after the creation of the .json file 
+we know to code to run our file is node hello.js now if we open .json file and in it we write     "yk":"node hello.js"
+then we can run the file also by node run yk command
+"yk":"node hello.js"            we can run file by node run yk 
+===========================
+ modular progamming  is when we divide our complete program into small modules 
+
+ see now if we have created a function of add but it is in a different file say for ex math.js 
+ and the main file is hello.js then we will have to use a module in main file then we nned to use a function called "require"
+ 
+ console.log(math.add(2,9));  ye line se chal jaiga 
+
+ 
+ "  const math = require('buffer') this is a build in module
+  "  const math = require('math')  if we do like this error will come saying module not found as it is finding in its build in package
+    "  const math = require('./math.js')
+
+I have created a file math.js and in that file i will create function which i can use in the main file and to use it 
+we will have to export also this also we have have to write a line   
+" module.exports = { add }; " by using this code we can export all the functions that are created 
+                              currently the file has only 1 function add and no other erpoted this
+                         
+                              
+we have to export a function if we have to use it in another module
+and in that another module we have to import it by require inbuilt function
+in require function we give the path of the import 
+
+if we the name of package as it is "abc" it finds it in node directory where all are kept 
+if we give by.abcd then it will find in the current directory 
+
+=====================================================
+File handling
+const fs = require("fs");//fs is a built in module 
+//The node:fs module enables interacting with the file system in a way modeled on standard POSIX functions
+
+
+fs.writeFileSync('./test.txt',"hey there"); this line i have wriiten it creates a file test.txt and when we open that file it has already written hey there in it
+ //writeFileSync means this was a synchronous call 
+ by this line of code i want it to create a file test.txt inside the current directory  and which contains hey therefore
+
+
+ a problem was coming again and again the file was not running and the problem was i was running it in a different folder 
+ ls--> if we write this then the list of all the directories come if your folder is here no problem if not then 
+ write cd abc.txt -->cd is change directory to the directory you need to run 
+ then type node abc.txt or whatever is your folder you need to run
+
+sync returns you the result b y putting in a varibale
+ 1)if we are using readfileSync it will work properly and return also 
+ 2)if we are using readfile it will not return 
+
+
+
+
+
+ <!-- fs.readFile("./contact.txt","utf-8",(err,result)=>{
+    if(err){
+        console.log("error",err);
+    }
+    else{
+        console.log(result);
+    }
+}); -->
+
+
+<!--  const result = fs.readFileSync("./contact.txt","utf-8");
+console.log(result); -->
+
+
+these 2 codes both will give the same output but the thing i am saying is that  when we are doing Sync that time 
+it is returning result and if error then throwing error
+but if we are not using sync or it is async that time it expects you will give a callback function and it will not reutrn anything the type is void 
+
+sync will return something
+async /no sync will not return anything
+
+
+
+another thing is file append by which we can add data 
+
+<!-- fs.cpSync("./test.txt","./copy.txt"); -->
+this command creates a copy file 
+
+
+<!-- console.log(fs.statSync("./contact.txt")); -->
+this command returns the stts like this
+Stats {
+  dev: 0,
+  mode: 33206,
+  nlink: 1,
+  uid: 0,
+  gid: 0,
+  rdev: 0,
+  blksize: 4096,
+  ino: 7318349394543050,
+  size: 71,
+  blocks: 0,
+  atimeMs: 1749468825954.7708,
+  mtimeMs: 1749468303826.128,
+  ctimeMs: 1749468303826.128,
+
+  ====================================
+  Architecture of node js 
+when a user request a node server this request comes to server first of all the request go in the event queue
+as the requests come they are put in queue and from there they use fifo principal
+ There is a event loop which watch event queue and pick request 1 by 1 
+ when we pick a request from the  request from eventqueue it can be of 2 types
+ 1)blocking  operations (synchronous)-->then it goes to thread pool(and these thread are responsible for fulfill blocking operation)
+ (threads are like worker and if a worker is free it is assigned to do work )  
+ when the work is done worker comes back to thread pool
+
+ 2)non blocking operations/request(asynchronous)-->process it and responded to user
+
+ recab  request-->event queue-->picked by event loop ->if non blocking ->on the spot done
+                                                        if blocking-->go to thread poll-->fulfuled by thread/worker 
+#be default we have 4 workers  i.e limited  but we can increase it to maximum ?no of CPU CORES IN SERVER if 8 core cup then 8 threads
+ we can check it by 
+ 
+ 
+ <!-- const os= require('os');   include this
+console.log(os.cpus().length);   //12 is coming output -->
+
+
+
+
+request 1 is blocking took worker 1   ,req 2 b took w2,re 3 blocking took w3,req 4 blocking took w4
+ then when the next request 5 comes it has to wait  until worker becomes free 
+ therfore long waiting time so it is not good to write blocking operations it better to write non blocking operations
+
+ synchronous blocking           asynchronous non-blocking
+
+ 
+//next  4 lineis a example of blocking               
+<!-- // console.log("1");
+// const result= fs.readFileSync("test.txt","utf-8");
+// console.log(result);
+// console.log("2"); -->
+#explaining the above 4 line here 1 will be printed then the file will be read and next operation will not run 
+until the complete file is run and after completion then the next operation print 2 will run
+
+
+
+
+//line  5  next is a example of non blocking 
+<!-- //  console.log("1");
+//  fs.readFile("test.txt","utf-8",(err,result)=>{
+//  console.log(result);
+//  });
+// console.log("2"); -->
+#explaining the above 5 line here 1 will be printed then the file will be read and next operation will also run 
+side by side and output will be 1 2 then the file read data it is not blocking any operation
+it does easy takes fast slow once later 
+
+
